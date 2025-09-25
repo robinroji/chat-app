@@ -8,16 +8,25 @@ function App() {
   
 const [name,setName] = useState('')
 const [room,setRoom] = useState('')
+const [showChat,setShowChat] = useState(false)
+
 
 const joinRoom = ()=>{
   if(name!=='' && room!==''){
     socket.emit('join_room',room);
+    setShowChat(true)
   }
 }
 
   return (
-    <>
-      <div>
+   
+      <div className='App' >
+
+    {!showChat?(
+
+    
+
+        <div className='joinChatContainer'>
         <h1>Chat App </h1>
 
         <input 
@@ -40,10 +49,14 @@ const joinRoom = ()=>{
           Join the room
          </button>
       </div>
+):(
+
 
       <Chat  socket={socket} userName = {name} room ={room} />
-    </>
-  )
-}
+    
+    )}
+    </div>
+)}
+
 
 export default App
