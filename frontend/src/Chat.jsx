@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import ScrollToBottom from 'react-scroll-to-bottom'
-const Chat = ({socket,userName,room}) => {
+import Swal from 'sweetalert2'
+
+const Chat = ({callBack,socket,userName,room}) => {
   console.log('teh room',room)
   console.log('the socket',socket)
   console.log('the author name is ',name)
 
   const [messageList,setMessage] = useState([])
   const [currentMessage,setCurrentMessage]= useState('')
+  const [live,setLive] = useState(false)
+
+  const showAlert = ()=>{
+    Swal.fire({
+      title:'Succesfully',
+      text:'Loged out',
+      icon:'success',
+      width:'300px'
+    })
+
+    callBack(false)
+  }
 
 useEffect(()=>{
     // console.log('useEffect is working ')
@@ -14,7 +28,8 @@ socket.off('recieve_message').on('recieve_message',(data)=>{
   console.log('entire data ',data)
   setMessage((list)=>[...list,data])
   setCurrentMessage('')
-     console.log('New message received:',messageList)
+     console.log('New message length:',messageList.length)
+     messageList.length?setLive(false):setLive(true)
 })
     
 },[])
@@ -42,12 +57,18 @@ try {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <h4>Start chat</h4>
+        <h4>{live?' 🟢 Live Chat ':'Start chat'}</h4>
+        <div className='flex-parant' >
+          <div className='flex-child' >
+            <p>Room: {room}</p>
+            <h5>{userName}</h5>
+         <button className='exit-chat-btn' onClick={()=>  showAlert()} >Logout</button>
+          </div>
+        </div>
       </div>
       <div className='chat-body'>
         <ScrollToBottom className='message-container' >
         {messageList.map((msg, index) => {
-          console.log('the ultimate is ',msg)
           return (
             <div className='message' key={index} id={msg.author===userName?'you':'other'}>
               <div className='message-content'>
