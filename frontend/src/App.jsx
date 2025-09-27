@@ -32,8 +32,14 @@ const joinRoom = ()=>{
   }
 }
 const callBackChild = (data)=>{
+  socket.disconnect()
+  socket = io.connect('http://localhost:5000'); 
+
+
   setName('')
   setShowChat(data)
+  console.log('the data from the child call back is ',data)
+  console.log('the socket is',socket)
 }
 
   return (

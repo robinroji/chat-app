@@ -11,7 +11,7 @@ const Chat = ({callBack,socket,userName,room}) => {
   const [currentMessage,setCurrentMessage]= useState('')
   const [live,setLive] = useState(false)
 
-  const showAlert = ()=>{
+  const showAlert = (socket)=>{
     Swal.fire({
       title:'Succesfully',
       text:'Loged out',
@@ -19,7 +19,8 @@ const Chat = ({callBack,socket,userName,room}) => {
       width:'300px'
     })
 
-    callBack(false)
+    callBack(false,socket)
+    
   }
 
 useEffect(()=>{
@@ -62,7 +63,7 @@ try {
           <div className='flex-child' >
             <p>Room: {room}</p>
             <h5>{userName}</h5>
-         <button className='exit-chat-btn' onClick={()=>  showAlert()} >Logout</button>
+         <button className='exit-chat-btn' onClick={()=>  showAlert(socket)} >Logout</button>
           </div>
         </div>
       </div>
